@@ -16,6 +16,16 @@
  */
 package edu.eci.pdsw.samples.tests;
 
+import edu.eci.pdsw.samples.entities.Consulta;
+import edu.eci.pdsw.samples.entities.Paciente;
+import edu.eci.pdsw.samples.services.ExcepcionServiciosPacientes;
+import edu.eci.pdsw.samples.services.ServiciosPacientes;
+import edu.eci.pdsw.samples.services.ServiciosPacientesStub;
+import java.sql.Date;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -34,8 +44,19 @@ public class PacientesTest {
     }
     
     @Test
-    public void registroPacienteTest(){
+    public void registroPacienteTest() throws ExcepcionServiciosPacientes{
+        Paciente pac=new Paciente(666, "cc", "jose", new Date (1996,9,26));
+        Set<Consulta> consultas= new HashSet<Consulta>();
+        Consulta consu=new Consulta(new Date(2016,3,8), "colicos");
+        consultas.add(consu);
+        pac.setConsultas(consultas);
+        ServiciosPacientes servipac = ServiciosPacientes.getInstance();
+        servipac.registrarNuevoPaciente(pac);
+        Paciente prueba=servipac.consultarPaciente(666, "cc");
+        assertTrue("El id del paciente debe ser igual ", pac.getId()==prueba.getId());
+        assertTrue("El nombre del paciente debe ser igual ", pac.getNombre()==prueba.getNombre());
         
+
     }
     
     

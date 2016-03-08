@@ -37,6 +37,9 @@ public class ConsultasTest {
     public void registroPacienteTest(){
         
     }
-    
-    
+     @Test
+    public void registroConsultaTest(){
+        
+    }
+   
 }
