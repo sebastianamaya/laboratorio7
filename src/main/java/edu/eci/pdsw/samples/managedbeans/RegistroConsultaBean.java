@@ -94,9 +94,12 @@ public class RegistroConsultaBean implements Serializable{
     }
     
     // Revisar Fecha de Nacimiento
-    public void setFechaNacimiento(String fecha) {
-        fecha = fecha +"";
-        this.fechaNacimiento = java.sql.Date.valueOf(fecha);
+    public void setFechaNacimiento(Date fecha) {;
+        int dia = fecha.getDay();
+        int mes = fecha.getMonth();
+        int year = fecha.getYear();
+        java.sql.Date temporal = new java.sql.Date(dia, mes, year);
+        this.fechaNacimiento = temporal;
     }
     
     public ArrayList<Paciente> getPacientes(){
@@ -108,7 +111,7 @@ public class RegistroConsultaBean implements Serializable{
     }
     
     public void registrarPaciente() throws ExcepcionServiciosPacientes{
-        System.out.println("Entre a " + id + tipo_id+nombre+apellido+fechaNacimiento);
+        listpacientes.add(new Paciente(123, "CC", "Juan Perez", java.sql.Date.valueOf("2000-01-01")));
         Paciente p = new Paciente(id, tipo_id, nombre+" "+apellido, fechaNacimiento);
         sp.registrarNuevoPaciente(p);
         listpacientes.add(p);

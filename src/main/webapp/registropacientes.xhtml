@@ -26,14 +26,15 @@
                     
                     <h:outputText value="Apellido: *"/>
                     <p:inputText value="#{beanConsultas.apellido}" required="true" label="apellido"/>
-                   
-                     <h:outputText value="Fecha de Nacimiento: *"/>
-                     <p:inputText value="#{beanConsultas.fechaNacimiento}" required="true" label="fecha"/>
-                     <p:commandButton actionListener="#{beanConsultas.registrarPaciente()}" update="formulario_paciente" icon="ui-icon-check" />
+                     
+                    <p:outputLabel for="fecha" value="Fecha de Nacimiento: *" />
+                    <p:calendar id="fecha" value="#{beanConsultas.fechaNacimiento}"  pattern="yyyy-MM-d" navigator="true" effect="fold" required="true"/>
+                                
+                     <p:commandButton value= "Save" actionListener="#{beanConsultas.registrarPaciente()}" update="formulario_paciente" icon="ui-icon-check" />
                 </h:panelGrid>
             </p:fieldset>
             
-            <p:fieldset legend="- Nuestros Pacientes -" toggleable="true" toggleSpeed="500">
+            <p:fieldset legend="- Pacientes -" toggleable="true" toggleSpeed="500">
                 <p:ajax event="toggle" listener="#{fieldsetView.handleToggle}" update="msgs" />
                     <h:panelGrid columns="2" cellpadding="5">
                         <p:commandButton  id="refresh" update="formulario_paciente" icon="ui-icon-arrowrefresh-1-w" title="Actualizar" />
