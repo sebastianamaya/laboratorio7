@@ -16,20 +16,105 @@
  */
 package edu.eci.pdsw.samples.managedbeans;
 
+import edu.eci.pdsw.samples.entities.Consulta;
+import edu.eci.pdsw.samples.entities.Paciente;
+import edu.eci.pdsw.samples.services.ExcepcionServiciosPacientes;
 import edu.eci.pdsw.samples.services.ServiciosPacientes;
 import java.io.Serializable;
-import javax.annotation.ManagedBean;
-import javax.enterprise.context.SessionScoped;
+import java.sql.Date;
+import java.util.ArrayList;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @author hcadavid
+ * @author Kevin S. Sanchez - Sebastian Amaya
  */
-@ManagedBean
+@ManagedBean (name = "beanConsultas")
 @SessionScoped
+
 public class RegistroConsultaBean implements Serializable{
     
-    ServiciosPacientes sp=ServiciosPacientes.getInstance();
+    // Aributos
+    private ArrayList<Consulta> listconsultas = new ArrayList<Consulta>();
+    private ServiciosPacientes sp = ServiciosPacientes.getInstance();
+    private ArrayList<Paciente> listpacientes = new ArrayList<>();
     
+    //Paciente
+    private int id;
+    private String tipo_id;
+    private String nombre;
+    private String apellido;
+    private Date fechaNacimiento;
     
+    //Metodos
+    public ArrayList<Paciente> getListaPacientes(){
+        return listpacientes;
+    }
+    
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTipo_id() {
+        return tipo_id;
+    }
+
+    public void setTipo_id(String tipo_id) {
+        this.tipo_id = tipo_id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    
+    public String getApellido(){
+        return apellido;
+    }
+    
+    public void setApellido(String apellido){
+        this.apellido = apellido;
+    }
+
+    public java.sql.Date getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+    
+    public java.sql.Date convertJavaDateToSqlDate(java.util.Date date) {
+        return new java.sql.Date(date.getTime());
+    }
+    
+    // Revisar Fecha de Nacimiento
+    public void setFechaNacimiento(String fecha) {
+        fecha = fecha +"";
+        this.fechaNacimiento = java.sql.Date.valueOf(fecha);
+    }
+    
+    public ArrayList<Paciente> getPacientes(){
+        return listpacientes;
+    }
+    
+    public ArrayList<Consulta> getConsultas(){
+        return listconsultas;
+    }
+    
+    public void registrarPaciente() throws ExcepcionServiciosPacientes{
+        System.out.println("Entre a " + id + tipo_id+nombre+apellido+fechaNacimiento);
+        Paciente p = new Paciente(id, tipo_id, nombre+" "+apellido, fechaNacimiento);
+        sp.registrarNuevoPaciente(p);
+        listpacientes.add(p);
+    }
+    
+    public Paciente consultarPaciente(int id, String tipo_id) throws ExcepcionServiciosPacientes{
+        return sp.consultarPaciente(id, tipo_id);
+    }
 }

@@ -23,7 +23,6 @@ import edu.eci.pdsw.samples.services.ServiciosPacientes;
 import edu.eci.pdsw.samples.services.ServiciosPacientesStub;
 import java.sql.Date;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import org.junit.Before;
@@ -46,7 +45,7 @@ public class PacientesTest {
     @Test
     public void registroPacienteTest() throws ExcepcionServiciosPacientes{
         Paciente pac=new Paciente(666, "cc", "jose", new Date (1996,9,26));
-        Set<Consulta> consultas= new HashSet<Consulta>();
+        Set<Consulta> consultas= new LinkedHashSet<Consulta>();
         Consulta consu=new Consulta(new Date(2016,3,8), "colicos");
         consultas.add(consu);
         pac.setConsultas(consultas);

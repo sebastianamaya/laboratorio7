@@ -52,7 +52,7 @@ public class ConsultasTest {
          assertTrue("La cantidad de consultas debe ser la misma registrada y la misma del paciente", prueba.getConsultas().size()==pac.getConsultas().size());
          Iterator<Consulta> iConsultas= prueba.getConsultas().iterator();
          Iterator<Consulta> iPac= pac.getConsultas().iterator();
-         while (iConsultas.hasNext() &&iPac.hasNext()){
+         while (iConsultas.hasNext() && iPac.hasNext()){
              assertTrue("La consulta debe ser la misma", iConsultas.next().getId()== iPac.next().getId());
          }
     }

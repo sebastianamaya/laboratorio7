@@ -38,7 +38,7 @@ public class Paciente {
         this.tipo_id = tipo_id;
         this.nombre = nombre;
         this.fechaNacimiento = fechaNacimiento;
-        consultas=new LinkedHashSet<>();
+        consultas = new LinkedHashSet<>();
     }
 
     public Paciente() {
