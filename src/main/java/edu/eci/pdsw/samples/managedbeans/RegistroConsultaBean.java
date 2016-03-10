@@ -47,6 +47,10 @@ public class RegistroConsultaBean implements Serializable{
     private String nombre;
     private String apellido;
     private Date fechaNacimiento;
+
+   
+    private Date fechaConsulta;
+    private String descripcion;
     
     //Metodos
     public ArrayList<Paciente> getListaPacientes(){
@@ -119,5 +123,31 @@ public class RegistroConsultaBean implements Serializable{
     
     public Paciente consultarPaciente(int id, String tipo_id) throws ExcepcionServiciosPacientes{
         return sp.consultarPaciente(id, tipo_id);
+    }
+    
+    
+    public void registrarConsulta() throws ExcepcionServiciosPacientes{
+       
+        Consulta con= new Consulta(fechaConsulta,descripcion);
+        sp.agregarConsultaAPaciente( id, tipo_id,  con);
+        listconsultas.add(con);
+    }
+     public Date getFechaConsulta() {
+        return fechaConsulta;
+    }
+
+    public void setFechaConsulta(Date fechaConsulta) {
+        this.fechaConsulta = fechaConsulta;
+        
+        
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    //consulta
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 }
