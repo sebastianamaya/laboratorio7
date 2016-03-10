@@ -7,23 +7,25 @@
     <h:body>
          <h:form id="nueva_consulta">
             <p:growl id="msgs" showDetail="true" />
-            <p:fieldset legend="Registrese" style="margin-bottom:20px">
+            
                 <h:panelGrid columns="2" columnClasses="label, value">
-                   
-                        
-                    
-                     <h:outputText value="ID: *"/>
+                  <h:outputText value="ID: *"/>
                      <p:inputText value="#{beanConsultas.id}" required="true" label="id"/>
                      
                      <h:outputText value="Descripcion: *"/>
                      <p:inputText value="#{beanConsultas.descripcion}" required="true" label="descripcion"/>
                      
                      <p:commandButton value= "Save" actionListener="#{beanConsultas.registrarConsulta()}" update="nueva_consulta" icon="ui-icon-check" />
+                     
+                     <p:outputLabel for="fecha" value="Fecha de Cnsulta: *" />
+                     <p:calendar id="fecha" value="#{beanConsultas.fechaConsulta}"  pattern="yyyy-MM-d" navigator="true" effect="fold" required="true"/> 
+                    
                 </h:panelGrid>      
-            </p:fieldset>
+            
             
             </h:form>
              
     </h:body>   
 
 </html>
+
