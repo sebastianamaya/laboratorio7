@@ -17,51 +17,48 @@
                         <f:selectItem itemLabel="CE" itemValue="CE" />
                         <f:selectItem itemLabel="TI" itemValue="TI" />
                     </p:selectOneMenu>
-                    
                     <h:outputText value="ID: *"/>
-                    <p:inputText value="#{beanConsultas.id}" required="true" label="id"/>
-                    
+                    <p:inputText value="#{beanConsultas.id}"/>
+
                     <h:outputText value="Nombres: *"/>
-                    <p:inputText value="#{beanConsultas.nombre}" required="true" label="nombre"/>
-                    
+                    <p:inputText value="#{beanConsultas.nombre}" />
+
                     <h:outputText value="Apellido: *"/>
-                    <p:inputText value="#{beanConsultas.apellido}" required="true" label="apellido"/>
-                     
-                    <p:outputLabel for="fecha" value="Fecha de Nacimiento: *" />
-                    <p:calendar id="fecha" value="#{beanConsultas.fechaNacimiento}"  pattern="yyyy-MM-d" navigator="true" effect="fold" required="true"/>
-                                
-                     <p:commandButton value= "Save" actionListener="#{beanConsultas.registrarPaciente()}" update="formulario_paciente" icon="ui-icon-check" />
+                    <p:inputText value="#{beanConsultas.apellido}"/>
+
+                    <p:outputLabel value="Fecha de Nacimiento: *" />
+                    <p:calendar value="#{beanConsultas.fechaNacimiento}"  pattern="yyyy-MM-dd" navigator="true" effect="fold"/>
+
+                    <p:commandButton value= "Save" action="#{beanConsultas.registrarPaciente()}" update="formulario_paciente" icon="ui-icon-check" />
                 </h:panelGrid>
             </p:fieldset>
             
             <p:fieldset legend="- Pacientes -" toggleable="true" toggleSpeed="500">
                 <p:ajax event="toggle" listener="#{fieldsetView.handleToggle}" update="msgs" />
-                    <h:panelGrid columns="2" cellpadding="5">
-                        <p:commandButton  id="refresh" update="formulario_paciente" icon="ui-icon-arrowrefresh-1-w" title="Actualizar" />
+                    <p:commandButton  id="refresh" update="formulario_paciente" icon="ui-icon-arrowrefresh-1-w" title="Actualizar" />
                         
-                        <p:dataTable id="listapacientes" var="paciente" value="#{beanConsultas.listaPacientes}">
-                            <f:facet name="header">
-                                Lista de Pacientes
-                            </f:facet>
-                            <p:column headerText="Tipo ID">
-                                <h:outputText value="#{paciente.tipo_id}" />
-                            </p:column>
-                            <p:column headerText="ID">
-                                <h:outputText value="#{paciente.id}" />
-                            </p:column>
-                            <p:column headerText="Nombre">
-                                <h:outputText value="#{paciente.nombre}" />
-                            </p:column>
-                            <p:column headerText="Fecha de Nacimiento">
-                                <h:outputText value="#{paciente.fechaNacimiento}" />
-                            </p:column>
-                            <p:column style="width:32px;text-align: center">
-                                 <p:commandButton update="formulario_paciente" oncomplete="" icon="ui-icon-disk" title="Reserva una Consulta">
-                                    <f:setPropertyActionListener value="#{paciente}" target="" />
-                                </p:commandButton>
-                            </p:column>
-                        </p:dataTable>
-                    </h:panelGrid>
+                    <p:dataTable var="paciente" value="#{beanConsultas.listaPacientes}">
+                        <f:facet name="header">
+                            Lista de Pacientes
+                        </f:facet>
+                        <p:column headerText="Tipo ID">
+                            <h:outputText value="#{paciente.tipo_id}" />
+                        </p:column>
+                        <p:column headerText="ID">
+                            <h:outputText value="#{paciente.id}" />
+                        </p:column>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{paciente.nombre}" />
+                        </p:column>
+                        <p:column headerText="Fecha de Nacimiento">
+                            <h:outputText value="#{paciente.fechaNacimiento}" />
+                        </p:column>
+                        <p:column headerText="Citas">
+                            <p:commandButton icon="ui-icon-disk" value="Reserva una Consulta" action="registroconsultas">
+                                <f:setPropertyActionListener value="#{paciente}" target="#{beanConsultas.pacienteActual}" />
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
             </p:fieldset>
         </h:form> 
         

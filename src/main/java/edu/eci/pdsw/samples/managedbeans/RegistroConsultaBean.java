@@ -21,7 +21,7 @@ import edu.eci.pdsw.samples.entities.Paciente;
 import edu.eci.pdsw.samples.services.ExcepcionServiciosPacientes;
 import edu.eci.pdsw.samples.services.ServiciosPacientes;
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -39,16 +39,26 @@ public class RegistroConsultaBean implements Serializable{
     // Aributos
     private ArrayList<Consulta> listconsultas = new ArrayList<Consulta>();
     private ServiciosPacientes sp = ServiciosPacientes.getInstance();
-    private ArrayList<Paciente> listpacientes = new ArrayList<>();
+    private ArrayList<Paciente> listpacientes;
     
+    // Constructor
+    public RegistroConsultaBean(){
+        listpacientes = new ArrayList<Paciente>();
+        listpacientes.add(new Paciente(123, "CC", "Juan Perez", java.sql.Date.valueOf("2000-01-01")));
+        listpacientes.add(new Paciente(321, "CC", "Maria Rodriguez", java.sql.Date.valueOf("2000-01-01")));
+        listpacientes.add(new Paciente(875, "CC", "Pedro Martinez", java.sql.Date.valueOf("1956-05-01")));
+    }
     //Paciente
     private int id;
     private String tipo_id;
     private String nombre;
     private String apellido;
     private Date fechaNacimiento;
+    
+    // Paciente actual
+    private Paciente paciente_actual = null;
 
-   
+    // Consulta
     private Date fechaConsulta;
     private String descripcion;
     
@@ -89,21 +99,13 @@ public class RegistroConsultaBean implements Serializable{
         this.apellido = apellido;
     }
 
-    public java.sql.Date getFechaNacimiento() {
+    public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
+
     
-    public java.sql.Date convertJavaDateToSqlDate(java.util.Date date) {
-        return new java.sql.Date(date.getTime());
-    }
-    
-    // Revisar Fecha de Nacimiento
-    public void setFechaNacimiento(Date fecha) {;
-        int dia = fecha.getDay();
-        int mes = fecha.getMonth();
-        int year = fecha.getYear();
-        java.sql.Date temporal = new java.sql.Date(dia, mes, year);
-        this.fechaNacimiento = temporal;
+    public void setFechaNacimiento(Date fecha) {
+        this.fechaNacimiento = fecha;
     }
     
     public ArrayList<Paciente> getPacientes(){
@@ -115,8 +117,7 @@ public class RegistroConsultaBean implements Serializable{
     }
     
     public void registrarPaciente() throws ExcepcionServiciosPacientes{
-        listpacientes.add(new Paciente(123, "CC", "Juan Perez", java.sql.Date.valueOf("2000-01-01")));
-        Paciente p = new Paciente(id, tipo_id, nombre+" "+apellido, fechaNacimiento);
+        Paciente p = new Paciente(id, tipo_id, nombre+" "+apellido, new java.sql.Date(fechaNacimiento.getTime()));
         sp.registrarNuevoPaciente(p);
         listpacientes.add(p);
     }
@@ -128,10 +129,11 @@ public class RegistroConsultaBean implements Serializable{
     
     public void registrarConsulta() throws ExcepcionServiciosPacientes{
        
-        Consulta con= new Consulta(fechaConsulta,descripcion);
+        Consulta con= new Consulta(new java.sql.Date(fechaConsulta.getTime()),descripcion);
         sp.agregarConsultaAPaciente( id, tipo_id,  con);
         listconsultas.add(con);
     }
+ 
      public Date getFechaConsulta() {
         return fechaConsulta;
     }
@@ -149,5 +151,13 @@ public class RegistroConsultaBean implements Serializable{
     //consulta
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+    
+    public Paciente getPacienteActual(){
+        return paciente_actual;
+    }
+    
+    public void setPacienteActual(Paciente actual){
+        this.paciente_actual = actual;
     }
 }
