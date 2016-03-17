@@ -20,9 +20,13 @@ import edu.eci.pdsw.samples.entities.Consulta;
 import edu.eci.pdsw.samples.entities.Paciente;
 import edu.eci.pdsw.samples.services.ExcepcionServiciosPacientes;
 import edu.eci.pdsw.samples.services.ServiciosPacientes;
+import edu.eci.pdsw.samples.services.ServiciosPacientesStub;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Set;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -36,17 +40,19 @@ import javax.faces.bean.SessionScoped;
 
 public class RegistroConsultaBean implements Serializable{
     
-    // Aributos
+    // Atributos
     private ArrayList<Consulta> listconsultas = new ArrayList<Consulta>();
     private ServiciosPacientes sp = ServiciosPacientes.getInstance();
     private ArrayList<Paciente> listpacientes;
+    private Paciente actual_paciente;
     
     // Constructor
     public RegistroConsultaBean(){
         listpacientes = new ArrayList<Paciente>();
         listpacientes.add(new Paciente(123, "CC", "Juan Perez", java.sql.Date.valueOf("2000-01-01")));
         listpacientes.add(new Paciente(321, "CC", "Maria Rodriguez", java.sql.Date.valueOf("2000-01-01")));
-        listpacientes.add(new Paciente(875, "CC", "Pedro Martinez", java.sql.Date.valueOf("1956-05-01")));
+        listpacientes.add(new Paciente(875, "CC", "Pedro Martine", java.sql.Date.valueOf("1956-05-01")));
+        actual_paciente = new Paciente(87, "CC", "prueba", new java.sql.Date(1996, 02, 12));
     }
     //Paciente
     private int id;
@@ -54,17 +60,21 @@ public class RegistroConsultaBean implements Serializable{
     private String nombre;
     private String apellido;
     private Date fechaNacimiento;
-    
-    // Paciente actual
-    private Paciente paciente_actual = null;
 
     // Consulta
     private Date fechaConsulta;
     private String descripcion;
+    private ArrayList<Consulta> consultas_pacientes;
+    private ArrayList<Consulta> consultas_depaciente;
     
     //Metodos
+    // Paciente
     public ArrayList<Paciente> getListaPacientes(){
         return listpacientes;
+    }
+    
+    public void setListaPacientes(ArrayList<Paciente> pac){
+        this.listpacientes = pac;
     }
     
     public int getId() {
@@ -108,14 +118,6 @@ public class RegistroConsultaBean implements Serializable{
         this.fechaNacimiento = fecha;
     }
     
-    public ArrayList<Paciente> getPacientes(){
-        return listpacientes;
-    }
-    
-    public ArrayList<Consulta> getConsultas(){
-        return listconsultas;
-    }
-    
     public void registrarPaciente() throws ExcepcionServiciosPacientes{
         Paciente p = new Paciente(id, tipo_id, nombre+" "+apellido, new java.sql.Date(fechaNacimiento.getTime()));
         sp.registrarNuevoPaciente(p);
@@ -125,13 +127,14 @@ public class RegistroConsultaBean implements Serializable{
     public Paciente consultarPaciente(int id, String tipo_id) throws ExcepcionServiciosPacientes{
         return sp.consultarPaciente(id, tipo_id);
     }
+        
+    // Consultas
+    public ArrayList<Consulta> getConsultas(){
+        return listconsultas;
+    }
     
-    
-    public void registrarConsulta() throws ExcepcionServiciosPacientes{
-       
-        Consulta con= new Consulta(new java.sql.Date(fechaConsulta.getTime()),descripcion);
-        sp.agregarConsultaAPaciente( id, tipo_id,  con);
-        listconsultas.add(con);
+    public void setConsultas(ArrayList<Consulta> con){
+        this.listconsultas = con;
     }
  
      public Date getFechaConsulta() {
@@ -140,8 +143,7 @@ public class RegistroConsultaBean implements Serializable{
 
     public void setFechaConsulta(Date fechaConsulta) {
         this.fechaConsulta = fechaConsulta;
-        
-        
+           
     }
 
     public String getDescripcion() {
@@ -153,11 +155,37 @@ public class RegistroConsultaBean implements Serializable{
         this.descripcion = descripcion;
     }
     
+        
+    public void registrarConsulta() throws ExcepcionServiciosPacientes{
+        Consulta con= new Consulta(new java.sql.Date(fechaConsulta.getTime()),descripcion);
+        sp.agregarConsultaAPaciente(actual_paciente.getId(), actual_paciente.getTipo_id(),  con);
+        listconsultas.add(con);
+    }
+    
     public Paciente getPacienteActual(){
-        return paciente_actual;
+        return actual_paciente;
     }
     
     public void setPacienteActual(Paciente actual){
-        this.paciente_actual = actual;
+        this.actual_paciente = actual;
+    }
+    
+    public String navegacion(Paciente p){
+        this.actual_paciente = p;
+        return "registroconsultas.xhtml";
+    }
+    
+    public ArrayList<Consulta> getConsultasPaciente(){
+        consultas_depaciente = new ArrayList();
+        Set<Consulta> temporal = actual_paciente.getConsultas();
+        for (Iterator<Consulta> iterator = temporal.iterator(); iterator.hasNext();) {
+            Consulta next = iterator.next();
+            consultas_depaciente.add(next);
+        }
+        return consultas_depaciente;
+    }
+    
+    public void setConsultasPaciente(ArrayList<Consulta> c){
+        this.consultas_depaciente = c;
     }
 }

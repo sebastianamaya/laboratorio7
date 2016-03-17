@@ -8,7 +8,7 @@
     <h:body>
         <h:form id="formulario_paciente">
             <p:growl id="msgs" showDetail="true" />
-            <p:fieldset legend="Registrese" style="margin-bottom:20px">
+            <p:fieldset legend="REGISTRESE" style="margin-bottom:20px">
                 <h:panelGrid columns="2" columnClasses="label, value">
                     <p:outputLabel for="tipo" value="Tipo ID: *" />
                     <p:selectOneMenu id="tipo" value="#{beanConsultas.tipo_id}" style="width:125px">
@@ -17,10 +17,10 @@
                         <f:selectItem itemLabel="CE" itemValue="CE" />
                         <f:selectItem itemLabel="TI" itemValue="TI" />
                     </p:selectOneMenu>
-                    <h:outputText value="ID: *"/>
-                    <p:inputText value="#{beanConsultas.id}"/>
+                    <h:outputText value="ID: *" />
+                    <p:inputText value="#{beanConsultas.id}" type="number"/>
 
-                    <h:outputText value="Nombres: *"/>
+                    <h:outputText value="Nombres: *" />
                     <p:inputText value="#{beanConsultas.nombre}" />
 
                     <h:outputText value="Apellido: *"/>
@@ -33,7 +33,7 @@
                 </h:panelGrid>
             </p:fieldset>
             
-            <p:fieldset legend="- Pacientes -" toggleable="true" toggleSpeed="500">
+            <p:fieldset legend="-PACIENTES-" toggleable="true" toggleSpeed="500">
                 <p:ajax event="toggle" listener="#{fieldsetView.handleToggle}" update="msgs" />
                     <p:commandButton  id="refresh" update="formulario_paciente" icon="ui-icon-arrowrefresh-1-w" title="Actualizar" />
                         
