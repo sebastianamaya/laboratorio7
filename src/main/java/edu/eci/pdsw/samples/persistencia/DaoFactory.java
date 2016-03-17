@@ -5,8 +5,8 @@
  */
 package edu.eci.pdsw.samples.persistencia;
 
-import edu.eci.pdsw.samples.persitencia.jdbc.JDBCDaoFactory;
-import edu.eci.pdsw.samples.persitencia.jdbc.JDBCDaoFactory;
+import edu.eci.pdsw.samples.persistencia.jdbc.JDBCDaoFactory;
+import edu.eci.pdsw.samples.persistencia.jdbc.JDBCDaoFactory;
 import java.util.Properties;
 import javax.persistence.PersistenceException;
 

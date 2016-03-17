@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.eci.pdsw.samples.persitencia.jdbc;
+package edu.eci.pdsw.samples.persistencia.jdbc;
 
 import edu.eci.pdsw.samples.persistencia.DaoFactory;
 import edu.eci.pdsw.samples.persistencia.DaoPaciente;
