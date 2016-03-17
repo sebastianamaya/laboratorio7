@@ -18,12 +18,15 @@ package edu.eci.pdsw.samples.services;
 
 import edu.eci.pdsw.samples.entities.Consulta;
 import edu.eci.pdsw.samples.entities.Paciente;
+import edu.eci.pdsw.samples.persistencia.DaoFactory;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Date;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,39 +37,47 @@ import java.util.logging.Logger;
 public class ServiciosPacientesStub extends ServiciosPacientes{
 
     private final Map<Tupla<Integer,String>,Paciente> pacientes;
+    private final Properties properties=new Properties();
+    
+    private DaoFactory DaoFactor=DaoFactory.getInstance(properties);
 
-    public ServiciosPacientesStub() {
+    public ServiciosPacientesStub(String propFileName) {
         this.pacientes = new LinkedHashMap<>();
         cargarDatosEstaticos(pacientes);
+        InputStream input = null;
+        input = ClassLoader.getSystemResourceAsStream(propFileName);
+        try {
+            properties.load(input);
+        } catch (IOException ex) {
+            Logger.getLogger(ServiciosPacientesStub.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
+       
     
     @Override
     public Paciente consultarPaciente(int idPaciente, String tipoid) throws ExcepcionServiciosPacientes {
-        Paciente p=pacientes.get(new Tupla<>(idPaciente,tipoid));
-        if (p==null){
-            throw new ExcepcionServiciosPacientes("Paciente "+idPaciente+" no esta registrado");
-        }
-        else{
-            return p;
-        }
+        DaoFactor.beginSession();
+        Paciente p= DaoFactor.getDaoPaciente().load(idPaciente, tipoid);
+        DaoFactor.endSession();
+        return p;
         
     }
 
     @Override
     public void registrarNuevoPaciente(Paciente p) throws ExcepcionServiciosPacientes {
-        pacientes.put(new Tupla<>(p.getId(),p.getTipo_id()), p);
+        DaoFactor.beginSession();
+        DaoFactor.getDaoPaciente().save(p);
+        DaoFactor.commitTransaction();
+        DaoFactor.endSession();
     }
 
     @Override
     public void agregarConsultaAPaciente(int idPaciente, String tipoid, Consulta c) throws ExcepcionServiciosPacientes {
-        Paciente p=pacientes.get(new Tupla<>(idPaciente,tipoid));
-        if (p==null){
-            throw new ExcepcionServiciosPacientes("Paciente "+idPaciente+" no esta registrado");
-        }
-        else{
-            p.getConsultas().add(c);
-        }
+        Paciente p = consultarPaciente(idPaciente, tipoid);
+        p.getConsultas().add(c);
+        DaoFactor.beginSession();
+        DaoFactor.getDaoPaciente().update(p);
+        DaoFactor.endSession();
     }
     
 
@@ -81,7 +92,8 @@ public class ServiciosPacientesStub extends ServiciosPacientes{
         }
         
         
-    } 
+    }
+   
 
 }
 
