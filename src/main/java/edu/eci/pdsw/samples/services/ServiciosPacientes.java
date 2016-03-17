@@ -26,7 +26,8 @@ import edu.eci.pdsw.samples.entities.Paciente;
 public abstract class ServiciosPacientes {
     
     
-    private static ServiciosPacientes instance=new ServiciosPacientesStub();
+    
+    private static final ServiciosPacientes instance=new ServiciosPacientesStub("applicationconfig.properties");
     
     
     protected ServiciosPacientes(){        
@@ -36,7 +37,7 @@ public abstract class ServiciosPacientes {
     public static ServiciosPacientes getInstance() throws RuntimeException{        
         return instance;
     }
-
+   
     /**
      * Consultar un paciente dado su identificador.
      * @param idPaciente identificador del paciente
